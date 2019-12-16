@@ -1,0 +1,83 @@
+<?php
+    require 'db.php';
+
+    // set default attri for PDO
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+
+    // get the db data
+    $sql = 'SELECT * FROM hiking';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $hiking = $stmt->fetchall(); //nb: default of FETCH_OBJ was set before
+
+    // generate tables with db data
+    function generateHiking($hiking)
+    {
+        foreach ($hiking as $hikes) {
+            echo'
+            <tr>
+                <td>'.$hikes->name.'</td>
+                <td>'.$hikes->difficulty.'</td>
+                <td>'.$hikes->distance.' km</td>
+                <td>'.$hikes->duration.'</td>
+                <td>'.$hikes->height_difference.' m</td>
+            </tr>
+        ';
+        }
+    }
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="shortcut icon" type="image/png" href="assets/img/favicon.ico"/>
+        <title>Hiking</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6">
+                    <h6 class="center-align">Table des Randonnées</h6>
+                    <table class="striped centered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nom de la randonnée
+                                </th>
+                                <th>
+                                    Difficulté
+                                </th>
+                                <th>
+                                    distance
+                                </th>
+                                <th>
+                                    Durée
+                                </th>
+                                <th>
+                                    Dénivelé
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php generateHiking($hiking); ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--JavaScript at end of body for optimized loading-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
+            // init materialize js stuff
+            document.addEventListener("DOMContentLoaded", function() {
+                M.AutoInit();
+            });
+    </script>
+    </body>
+</html>
