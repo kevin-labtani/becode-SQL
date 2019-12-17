@@ -16,14 +16,32 @@
         foreach ($hiking as $hikes) {
             echo'
             <tr>
-                <td>'.$hikes->name.'</td>
+                <td><a href="update.php/?id='.$hikes->id.'">'.$hikes->name.'</a></td>
                 <td>'.$hikes->difficulty.'</td>
                 <td>'.$hikes->distance.' km</td>
                 <td>'.$hikes->duration.'</td>
                 <td>'.$hikes->height_difference.' m</td>
+                <td>'.$hikes->available.'</td>
+                <td>
+                    <form action="read.php" method="POST">
+                        <div class="">
+                            <button class="btn-small red white-text darken-3 btn-flat" type="submit" name="remove" value="'.$hikes->id.'">Del</button>
+                        </div>
+                    </form>
+                </td>
             </tr>
         ';
         }
+    }
+
+    // look for deletions
+    if (isset($_POST['remove'])) {
+        $id = $_POST['remove'];
+
+        $sql = 'DELETE FROM hiking WHERE id = :id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        header('location: read.php');
     }
 
 ?>
@@ -61,6 +79,9 @@
                                 </th>
                                 <th>
                                     Dénivelé
+                                </th>
+                                <th>
+                                    Available
                                 </th>
                             </tr>
                         </thead>

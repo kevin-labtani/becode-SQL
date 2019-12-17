@@ -12,6 +12,7 @@
             'name' => FILTER_SANITIZE_STRING,
             'difficulty' => FILTER_SANITIZE_STRING,
             'distance' => FILTER_SANITIZE_NUMBER_INT,
+            'available' => FILTER_UNSAFE_RAW,
             'duration' => FILTER_UNSAFE_RAW,
             'height_difference' => FILTER_SANITIZE_NUMBER_INT,
         ];
@@ -28,9 +29,10 @@
         $difficulty = $SanitizedResult['difficulty'];
         $distance = $SanitizedResult['distance'];
         $duration = $SanitizedResult['duration'];
+        $available = $SanitizedResult['available'];
         $height_difference = $SanitizedResult['height_difference'];
 
-        $sql = 'INSERT INTO `hiking`(`name`, `difficulty`, `distance`, `duration`, `height_difference`) VALUES(:name, :difficulty, :distance, :duration, :height_difference)';
+        $sql = 'INSERT INTO `hiking`(`name`, `difficulty`, `distance`, `duration`, `height_difference`, `available`) VALUES(:name, :difficulty, :distance, :duration, :height_difference, :available)';
         $stmt = $pdo->prepare($sql);
 
         if (!$stmt) {
@@ -44,6 +46,7 @@
             'distance' => $distance,
             'duration' => $duration,
             'height_difference' => $height_difference,
+            'available' => $available,
         ]);
 
         echo 'Randonnée Ajoutée'.'<br/>';
@@ -69,11 +72,11 @@
 		<div>
 			<label for="difficulty">Difficulté</label>
 			<select name="difficulty">
-				<option value="très facile">Très facile</option>
-				<option value="facile">Facile</option>
-				<option value="moyen">Moyen</option>
-				<option value="difficile">Difficile</option>
-				<option value="très difficile">Très difficile</option>
+				<option value="Très_facile">Très facile</option>
+				<option value="Facile">Facile</option>
+				<option value="Moyen">Moyen</option>
+				<option value="Difficile">Difficile</option>
+				<option value="Très_difficile">Très difficile</option>
 			</select>
 		</div>
 
@@ -88,6 +91,15 @@
 		<div>
 			<label for="height_difference">Dénivelé</label>
 			<input type="text" name="height_difference" value="">
+		</div>
+        <div>
+            <input type="radio" id="choice1"
+            name="available" value="1" checked>
+            <label for="choice1">Available</label>
+
+            <input type="radio" id="choice2"
+            name="available" value="0">
+            <label for="choice2">Unavailable</label>
 		</div>
 		<button type="submit" name="button">Envoyer</button>
 	</form>

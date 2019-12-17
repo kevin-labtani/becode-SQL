@@ -1,0 +1,1 @@
+ALTER TABLE hiking ADD available BOOL DEFAULT TRUE;
