@@ -1,4 +1,10 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['login'], $_SESSION['pwd'])) {
+    header('location: login.php');
+}
+
     require 'db.php';
 
     // set default attri for PDO

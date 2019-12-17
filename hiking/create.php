@@ -1,9 +1,13 @@
 <?php
+session_start();
+if (!isset($_SESSION['login'], $_SESSION['pwd'])) {
+    header('location: login.php');
+}
 
-    require 'db.php';
+require 'db.php';
 
-    // set default attri for PDO
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+// set default attri for PDO
+$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
     // look for new submissions
     if (isset($_POST['button'])) {
@@ -51,7 +55,6 @@
 
         echo 'Randonnée Ajoutée'.'<br/>';
     }
-
 ?>
 <!DOCTYPE html>
 <html>

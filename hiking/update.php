@@ -1,4 +1,10 @@
 <?php
+
+    session_start();
+    if (!isset($_SESSION['login'], $_SESSION['pwd'])) {
+        header('location: login.php');
+    }
+
     $id = $_GET['id'];
     require 'db.php';
 
