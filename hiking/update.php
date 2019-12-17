@@ -1,15 +1,29 @@
 <?php
 
-    session_start();
-    if (!isset($_SESSION['login'], $_SESSION['pwd'])) {
-        header('location: login.php');
-    }
-
-    $id = $_GET['id'];
     require 'db.php';
 
     // set default attri for PDO
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+
+    session_start();
+    // check if user is logged in
+    if (!isset($_SESSION['login'], $_SESSION['pwd'])) {
+        header('location: login.php');
+    }
+
+    $sql = 'SELECT * FROM user WHERE username = :username AND password <= :password';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'username' => $_SESSION['login'],
+        'password' => $_SESSION['pwd'],
+    ]);
+    $user = $stmt->fetch();
+
+    if (empty($user)) {
+        header('location: login.php');
+    }
+
+    $id = $_GET['id'];
 
     // get the db data
     $sql = 'SELECT * FROM hiking WHERE id = :id';
