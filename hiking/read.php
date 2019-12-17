@@ -15,14 +15,13 @@
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'username' => $_SESSION['login'],
-        'password' => $_SESSION['pwd'],
+        'password' => sha1($_SESSION['pwd']),
     ]);
     $user = $stmt->fetch();
 
     if (empty($user)) {
         header('location: login.php');
     }
-
 
     // get the db data
     $sql = 'SELECT * FROM hiking';
